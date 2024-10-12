@@ -4,7 +4,7 @@
   align-items: flex-start;
   justify-content: center;
   margin-bottom: 0;
-  gap: 1px;
+  gap: 5px;
 }
 
 p {
@@ -12,4 +12,9 @@ p {
   gap: 5px;
   justify-content: center;
   align-items: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
 }

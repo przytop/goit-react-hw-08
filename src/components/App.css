@@ -3,18 +3,15 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
 }
 
-h1 {
-  margin-bottom: 20px;
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.loader {
-  margin-bottom: 20px;
-}
-
-.error {
-  color: red;
+input {
+  padding: 5px;
 }

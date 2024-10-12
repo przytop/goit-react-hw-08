@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchContacts, addContact, deleteContact } from "./operations";
+import toast from "react-hot-toast";
 
 const handlePending = (state) => {
   state.loading = true;
@@ -13,8 +14,10 @@ const handleFulfilled = (operation) => (state, action) => {
     state.items = action.payload;
   } else if (operation === "add") {
     state.items.push(action.payload);
+    toast.success("Contact added");
   } else if (operation === "delete") {
     state.items = state.items.filter((item) => item.id !== action.payload.id);
+    toast.success("Contact deleted");
   }
 };
 
@@ -34,7 +37,10 @@ const contactsSlice = createSlice({
   initialState: contactsInitialState,
   extraReducers: (builder) => {
     builder
-      .addCase(fetchContacts.pending, handlePending)
+      .addCase(fetchContacts.pending, (state) => {
+        state.items = [];
+        state.loading = true;
+      })
       .addCase(fetchContacts.fulfilled, handleFulfilled("fetch"))
       .addCase(fetchContacts.rejected, handleRejected)
       .addCase(addContact.pending, handlePending)

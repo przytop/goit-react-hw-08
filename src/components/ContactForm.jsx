@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useId } from "react";
-import { selectContacts } from "../redux/selectors";
-import { addContact } from "../redux/operations";
+import { selectContacts } from "../redux/contacts/selectors";
+import { addContact } from "../redux/contacts/operations";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import css from "./ContactForm.module.css";
@@ -9,28 +9,30 @@ import css from "./ContactForm.module.css";
 export default function ContactForm() {
   const dispatch = useDispatch();
   const nameFieldId = useId();
-  const phoneFieldId = useId();
+  const numberFieldId = useId();
 
   const initialValues = {
     name: "",
-    phone: "",
+    number: "",
   };
 
   const contacts = useSelector(selectContacts);
 
   const handleSubmit = (values, actions) => {
-    const { name, phone } = values;
+    const { name, number } = values;
     const duplicateName = contacts.some(
       (contact) => contact.name.toLowerCase() === name.toLowerCase()
     );
-    const duplicatePhone = contacts.some((contact) => contact.phone === phone);
+    const duplicateNumber = contacts.some(
+      (contact) => contact.number === number
+    );
 
     if (duplicateName) {
       alert(`The name ${name} is already in your contacts.`);
-    } else if (duplicatePhone) {
-      alert(`The phone number ${phone} is already in your contacts.`);
+    } else if (duplicateNumber) {
+      alert(`The phone number ${number} is already in your contacts.`);
     } else {
-      dispatch(addContact({ name, phone }));
+      dispatch(addContact({ name, number }));
       actions.resetForm();
     }
   };
@@ -41,7 +43,7 @@ export default function ContactForm() {
       .max(50, "is too long!")
       .matches(/^[A-Za-z\s-]+$/, "must be a valid name!")
       .required("is required!"),
-    phone: Yup.string()
+    number: Yup.string()
       .min(7, "is too short!")
       .matches(/^[0-9-]+$/, "must be a valid phone number!")
       .required("is required!"),
@@ -62,13 +64,13 @@ export default function ContactForm() {
         </label>
         <Field type="text" name="name" id={nameFieldId} />
 
-        <label className={css.label} htmlFor={phoneFieldId}>
+        <label className={css.label} htmlFor={numberFieldId}>
           Number
-          <ErrorMessage name="phone">
+          <ErrorMessage name="number">
             {(msg) => <span className={css.error}>{msg}</span>}
           </ErrorMessage>
         </label>
-        <Field type="text" name="phone" id={phoneFieldId} />
+        <Field type="text" name="number" id={numberFieldId} />
 
         <button type="submit">Add contact</button>
       </Form>
